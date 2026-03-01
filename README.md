@@ -18,23 +18,25 @@ Each tag is also available with a version suffix (e.g., `1.0.0`, `security-1.0.0
 
 ## Configuration
 
-### Listening Mode (Cloud / Remote Access)
+### Listening Mode
 
-By default, Pi-hole only responds to DNS queries from local/private networks. If you're running on a **cloud VM** or need to accept queries from a public IP, set the listening mode:
+This image defaults to `dns.listeningMode=all` so Pi-hole accepts DNS queries regardless of your network setup (Docker bridge, host networking, cloud VM). This avoids the common `ignoring query from non-local network` error.
+
+You can override this at runtime:
 
 ```bash
--e FTLCONF_dns_listeningMode=all
+-e FTLCONF_dns_listeningMode=local
 ```
 
 Available modes:
 
 | Value | Behavior |
 |---|---|
-| `local` (default) | Only responds to queries from local subnets |
+| `all` **(this image's default)** | Responds on all interfaces, from any source |
+| `local` | Only responds to queries from local subnets |
 | `single` | Only on the primary interface |
-| `all` | Responds on all interfaces, from any source |
 
-> **Security warning:** With `all` on a public-facing server, your Pi-hole becomes an open DNS resolver. Always **firewall port 53** to restrict access to your IP(s):
+> **Security warning:** When exposing Pi-hole to the internet (e.g., on a cloud VM), always **firewall port 53** to restrict access to your IP(s) to prevent your server from being used as an open DNS resolver:
 > ```bash
 > ufw allow from YOUR_IP to any port 53
 > ufw deny 53

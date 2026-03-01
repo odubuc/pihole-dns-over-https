@@ -26,5 +26,13 @@ fi
 echo "[pihole-dns-over-https] Configuring Pi-hole upstream DNS to use dnscrypt-proxy (127.0.0.1#5053)..."
 pihole-FTL --config dns.upstreams '["127.0.0.1#5053"]' 2>/dev/null || true
 
+# Set listening mode to 'all' by default so Pi-hole accepts queries regardless of
+# network topology (Docker bridge, host, cloud). Users can override this at runtime
+# with -e FTLCONF_dns_listeningMode=local (or single).
+if [ -z "$FTLCONF_dns_listeningMode" ]; then
+    echo "[pihole-dns-over-https] Setting dns.listeningMode=all (override with FTLCONF_dns_listeningMode env var)"
+    pihole-FTL --config dns.listeningMode all 2>/dev/null || true
+fi
+
 # Hand off to the original Pi-hole entrypoint
 exec start.sh
