@@ -18,7 +18,7 @@ Each tag is also available with a version suffix (e.g., `1.0.0`, `security-1.0.0
 
 ## Quick Start
 
-```bash
+```bash 
 docker run -d \
   --name pihole-dns-over-https \
   -p 53:53/tcp \
