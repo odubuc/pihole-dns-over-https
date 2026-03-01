@@ -1,0 +1,61 @@
+# dnscrypt-proxy configuration for Pi-hole DoH
+# Based on: https://docs.pi-hole.net/guides/dns/dnscrypt-proxy/
+
+# Listen on 127.0.0.1:5053 to avoid conflict with Pi-hole's FTLDNS on port 53
+listen_addresses = ['127.0.0.1:5053']
+
+# Use Cloudflare's malware-blocking DNS server
+# Browse available servers at: https://dnscrypt.info/public-servers/
+server_names = ['cloudflare']
+
+# Maximum number of simultaneous client connections to accept
+max_clients = 250
+
+# Use servers reachable over IPv4
+ipv4_servers = true
+
+# Do not use servers reachable over IPv6 (set to true if you have IPv6 connectivity)
+ipv6_servers = false
+
+# Use servers implementing the DNSCrypt protocol
+dnscrypt_servers = true
+
+# Use servers implementing the DNS-over-HTTPS protocol
+doh_servers = true
+
+# Server must support DNS security extensions (DNSSEC)
+require_dnssec = false
+
+# Server must not log user queries
+require_nolog = true
+
+# Server must not enforce its own blocklist
+require_nofilter = false
+
+# How long a DNS query will wait for a response, in milliseconds
+timeout = 5000
+
+# Keepalive for HTTP (HTTPS, HTTP/2) queries, in seconds
+keepalive = 30
+
+# Automatic log files rotation
+# Maximum log files size in MB - Set to 0 for unlimited.
+log_files_max_size = 10
+
+# How long to keep backup files, in days
+log_files_max_age = 7
+
+# Maximum log files backups to keep (or 0 to keep all backups)
+log_files_max_backups = 1
+
+#########################
+# Source for resolvers  #
+#########################
+
+[sources]
+  [sources.'public-resolvers']
+  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md']
+  cache_file = '/var/cache/dnscrypt-proxy/public-resolvers.md'
+  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  refresh_delay = 72
+  prefix = ''
