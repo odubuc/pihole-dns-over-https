@@ -36,12 +36,6 @@ Available modes:
 | `local` | Only responds to queries from local subnets |
 | `single` | Only on the primary interface |
 
-> **Security warning:** When exposing Pi-hole to the internet (e.g., on a cloud VM), always **firewall port 53** to restrict access to your IP(s) to prevent your server from being used as an open DNS resolver:
-> ```bash
-> ufw allow from YOUR_IP to any port 53
-> ufw deny 53
-> ```
-
 ## Quick Start
 
 ```bash 
